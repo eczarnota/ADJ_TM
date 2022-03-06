@@ -1,13 +1,22 @@
 import re
+import nltk
+nltk.download('stopwords')
+from nltk.corpus import stopwords
 
-input = "Dzisiaj mamy 4 stopnie na plusie, 1 marca 2022 roku"
-result = re.sub('\d', '', input)
-print(result)
+stops = set(stopwords.words('english'))
+print(stops)
+def OczyszczanieTekstu(input):
+    result = re.findall('[;:][^\w|\s|;|:]?[^\w|\s|;|:]', input)
+    result1 = re.sub('[;:][^\w|\s|;|:]?[^\w|\s|;|:]', '', input)
+    result2 = result1.lower()
+    result3 = re.sub('\d', '', result2)
+    result4 = re.sub('<[^>]*>', '', result3)
+    result5 = re.sub('[!"#$%&\'()*+,\-./:;<=>?@[\]^_`{|}~]', '', result4)
+    result6 = " ".join(result5.split())
+    result7=result6
+    for emotikony in result:
+        result7 += emotikony
+    print(result7)
+    return result7
 
-input = "<div><h2>Header</h2> <p>article<b>strong text</b> <a href="">link</a></p></div>"
-result = re.sub('<[^>]*>', '', input)
-print(result)
-
-input = "Lorem ipsum dolor sit amet, consectetur; adipiscing elit.Sed eget mattis sem. Mauris egestas erat quam, ut faucibus eros congue et. Inblandit, mi eu porta; lobortis, tortor nisl facilisis leo, at tristique augue risuseu risus."
-result = re.sub('[!"#$%&\'()*+,\-./:;<=>?@[\]^_`{|}~]', '', input)
-print(result)
+OczyszczanieTekstu("<div><h2>  :)  Header333,,  </h2> <p>article1<b>strong   ;)   text2!</b> <a href="">link     </a>:( </p></div>")
